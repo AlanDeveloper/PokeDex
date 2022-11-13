@@ -7,4 +7,7 @@ userRoutes.get("/user/:id", UserController.findOneOrListAll);
 userRoutes.put("/user/:id", UserController.update);
 userRoutes.delete("/user/:id", UserController.destroy);
 
+userRoutes.get("/user/:id/pokemon", UserController.pokemons);
+userRoutes.post("/user/:id/pokemon", UserController.associatePokemon);
+
 module.exports = userRoutes;
