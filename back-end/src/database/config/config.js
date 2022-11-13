@@ -1,5 +1,5 @@
 require("dotenv").config();
-console.log(process.env.NODE_ENV, "it is being loaded correctly");
+console.log(process.env.APP_ENV, "it is being loaded correctly");
 
 const config = {
     "development": {
