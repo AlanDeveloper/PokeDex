@@ -2,6 +2,7 @@ const express = require("express");
 const authRoutes = require("./authRoutes");
 const typeRoutes = require("./typeRoutes");
 const pokemonRoutes = require("./pokemonRoutes");
+const userRoutes = require("./userRoutes");
 const auth = require("../middlewares/auth");
 const routes = express.Router();
 
@@ -11,6 +12,7 @@ routes.get("/", (req, res) => {
 routes.use("/", authRoutes);
 routes.use("/", auth, typeRoutes);
 routes.use("/", auth, pokemonRoutes);
+routes.use("/", auth, userRoutes);
 
 // NOT FOUND
 routes.use(function (req, res, next) {
