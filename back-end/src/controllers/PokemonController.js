@@ -1,9 +1,12 @@
 const db = require("../models/index.js");
 const PokemonModel = db.Pokemon;
+const UserModel = db.User;
 
 class PokemonController {
     create = async (req, res, next) => {
         try {
+            let user = await UserModel.findOne({ where: { id: req.id } });
+            if (!user.dataValues.admin) throw "This user does not have permission for this action.";
             const pokemon = await PokemonModel.create(req.body);
 
             res.status(201);
@@ -30,6 +33,8 @@ class PokemonController {
     update = async (req, res, next) => {
         let id = req.params.id;
         try {
+            let user = await UserModel.findOne({ where: { id: req.id } });
+            if (!user.dataValues.admin) throw "This user does not have permission for this action.";
             if (!await PokemonModel.findByPk(id)) throw "Not found";
             await PokemonModel.update(req.body, { where: { id: id } });
             const pokemon = await PokemonModel.findByPk(id);
@@ -45,6 +50,8 @@ class PokemonController {
     destroy = async (req, res, next) => {
         let id = req.params.id;
         try {
+            let user = await UserModel.findOne({ where: { id: req.id } });
+            if (!user.dataValues.admin) throw "This user does not have permission for this action.";
             if (!await PokemonModel.findByPk(id)) throw "Not found";
             await PokemonModel.destroy({ where: { id: id } });
 

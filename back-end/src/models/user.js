@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
         name: DataTypes.STRING,
         username: DataTypes.STRING,
         email: DataTypes.STRING,
-        password: DataTypes.STRING
+        password: DataTypes.STRING,
+        admin: DataTypes.BOOLEAN
     }, {
         hooks: {
             beforeCreate: async (user) => {
