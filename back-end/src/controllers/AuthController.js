@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const db = require("../models/index.js");   
 const UserModel = db.User;
+const jwt = require('jsonwebtoken');
 
 class AuthController {
 
@@ -10,6 +11,7 @@ class AuthController {
         try {
             const user = username ? await UserModel.findOne({ where: { username: username } }) : await UserModel.findOne({ where: { email: email } });
             if (bcrypt.compareSync(password, user.password)) {
+                user.dataValues.token = jwt.sign({ id: user.id }, process.env.APP_SECRET, { expiresIn: 600 });
 
                 res.status(200);
                 return res.json(user);
