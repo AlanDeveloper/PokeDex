@@ -4,6 +4,7 @@ import textValidation from "../../utils/textValidation";
 import useYupValidationResolver from "../../utils/useYupValidationResolver";
 import * as yup from "yup";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 
 export default function Login() {
@@ -14,15 +15,18 @@ export default function Login() {
     });
     const resolver = useYupValidationResolver(validationSchema);
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver });
-    const { user, setUser } = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
+    const navigate = useNavigate();
     const onSubmit = data => {
         login(data).then(res => {
             setUser(res);
 
             const d = new Date();
-            d.setTime(d.getTime() + (5 * 24 * 60 * 60 * 1000));
+            d.setTime(d.getTime() + 6000000);
             let expires = "expires=" + d.toUTCString();
             document.cookie = "_token=" + res.token + ";" + expires + ";path=/";
+
+            navigate("/");
         });
     }
 
