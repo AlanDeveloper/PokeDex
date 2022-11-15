@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import { login } from "../../providers/authProvider";
-import textValidation from "../../Utils/textValidation";
-import useYupValidationResolver from "../../Utils/useYupValidationResolver";
+import textValidation from "../../utils/textValidation";
+import useYupValidationResolver from "../../utils/useYupValidationResolver";
 import * as yup from "yup";
+import { useContext } from "react";
+import UserContext from "../../contexts/UserContext";
 
 export default function Login() {
 
@@ -12,9 +14,15 @@ export default function Login() {
     });
     const resolver = useYupValidationResolver(validationSchema);
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver });
+    const { user, setUser } = useContext(UserContext);
     const onSubmit = data => {
         login(data).then(res => {
-            console.log(res);
+            setUser(res);
+
+            const d = new Date();
+            d.setTime(d.getTime() + (5 * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = "_token=" + res.token + ";" + expires + ";path=/";
         });
     }
 

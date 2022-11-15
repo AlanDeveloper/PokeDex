@@ -1,8 +1,8 @@
 import { signup } from "../../providers/authProvider";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import useYupValidationResolver from "../../Utils/useYupValidationResolver";
-import textValidation from "../../Utils/textValidation";
+import useYupValidationResolver from "../../utils/useYupValidationResolver";
+import textValidation from "../../utils/textValidation";
 
 export default function SignUp() {
 
