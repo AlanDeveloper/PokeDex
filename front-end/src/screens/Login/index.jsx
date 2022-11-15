@@ -1,19 +1,19 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function Login() {
 
-    const [usernameOremail, setUsernameOrEmail] = useState();
-    const [password, setPassword] = useState();
+    const { register, handleSubmit } = useForm();
+    const onSubmit = data => console.log(data);
 
     return (
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div>
-                <label htmlFor="usernameOremail">Username or Email</label>
-                <input type="text" id="usernameOremail" onChange={e => setUsernameOrEmail(e.target.value)} placeholder="Type your username or email" />
+                <label htmlFor="username">Username or Email</label>
+                <input type="text" id="username" {...register("username")} placeholder="Type your username or email" />
             </div>
             <div>
                 <label htmlFor="password">Password</label>
-                <input type="text" id="password" onChange={e => setPassword(e.target.value)} placeholder="Type your password" />
+                <input type="password" id="password" {...register("password")} placeholder="Type your password" />
             </div>
             <input type="submit" value="Submit" />
         </form>
