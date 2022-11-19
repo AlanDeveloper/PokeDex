@@ -4,7 +4,11 @@ import UserContext from "./contexts/UserContext";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import NotFound from "./screens/NotFound";
+import Pokemon from "./screens/Pokemon";
 import SignUp from "./screens/SignUp";
+import Type from "./screens/Type";
+import User from "./screens/User";
+import getCookie from "./utils/getCookie";
 
 export default function App() {
     const [user, setUser] = useState({});
@@ -16,15 +20,11 @@ export default function App() {
                 <Route path="/" element={auth ? <Home /> : <Navigate to="/login" />} />
                 <Route path="/login" element={!auth ? <Login /> : <Navigate to="/" />} />
                 <Route path="/signup" element={!auth ? <SignUp /> : <Navigate to="/" />} />
+                <Route path="/type_pokemon" element={auth ? <Type /> : <Navigate to="/" />} />
+                <Route path="/pokemon" element={auth ? <Pokemon /> : <Navigate to="/" />} />
+                <Route path="/user" element={auth ? <User /> : <Navigate to="/" />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </UserContext.Provider>
     );
-}
-
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-
-    if (parts.length === 2) return parts.pop().split(';').shift();
 }
