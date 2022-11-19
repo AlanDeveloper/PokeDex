@@ -17,7 +17,11 @@ export default function Home() {
         <div>
             <h1>Bem vindo!</h1>
             {user.admin && (
-                <Link to="/type_pokemon">Type</Link>
+                <>
+                    <Link to="/type_pokemon">Type</Link>
+                    <Link to="/pokemon">Pokemon</Link>
+                    <Link to="/user">User</Link>
+                </>
             )}
             <Link to="#" onClick={logout}>Logout</Link>
         </div>

@@ -21,9 +21,9 @@ export default function Type() {
                 </thead>
                 <tbody>
                     {types.length > 0 ? (
-                        types.map(type => {
+                        types.map((type, index) => {
                             return (
-                            <tr>
+                            <tr key={index}>
                                 <td>{type.name}</td>
                                 <td>{type.status ? "Active" : "Inactive"}</td>
                             </tr>

@@ -20,9 +20,9 @@ export default function Pokemon() {
                 </thead>
                 <tbody>
                     {users.length > 0 ? (
-                        users.map(type => {
+                        users.map((type, index) => {
                             return (
-                                <tr>
+                                <tr key={index}>
                                     <td>{type.name}</td>
                                     <td>{type.email}</td>
                                     <td>{type.username}</td>

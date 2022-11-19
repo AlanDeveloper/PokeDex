@@ -19,9 +19,9 @@ export default function Pokemon() {
                 </thead>
                 <tbody>
                     {pokemons.length > 0 ? (
-                        pokemons.map(type => {
+                        pokemons.map((type, index) => {
                             return (
-                                <tr>
+                                <tr key={index}>
                                     <td>{type.name}</td>
                                     <td>{type.typeId}</td>
                                 </tr>

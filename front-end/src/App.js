@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import UserContext from "./contexts/UserContext";
+import useStorage from "./contexts/useStorage";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import NotFound from "./screens/NotFound";
@@ -11,7 +12,7 @@ import User from "./screens/User";
 import getCookie from "./utils/getCookie";
 
 export default function App() {
-    const [user, setUser] = useState({});
+    const [user, setUser] = useStorage("user");
     const auth = getCookie("_token");
 
     return (
