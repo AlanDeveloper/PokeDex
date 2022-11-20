@@ -29,14 +29,14 @@ export default function Pokemon() {
     const { isShowing: isShowingCreate, toggle: toggleCreate } = useModal();
     const { isShowing: isShowingUpdate, toggle: toggleUpdate } = useModal();
     const [data, setData] = useState({});
-    const [user, setUser] = useStorage("user");
+    const [user] = useStorage("user");
 
     useEffect(() => {
         listAll().then(res => setPokemons(res));
         listAllTypes().then(res => setTypes(res));
     }, []);
 
-    const onCreate = formData => {
+    const onCreate = (formData) => {
         addPokemon({ name: formData.createName, typeId: formData.createTypeId }).then(res => {
             listAll().then(res => setPokemons(res));
         });

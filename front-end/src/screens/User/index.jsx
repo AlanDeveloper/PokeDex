@@ -14,6 +14,7 @@ export default function User() {
         updateName: yup.string().max(125, textValidation("name", { max: 125 })).required(textValidation("name", { required: true })),
         updateEmail: yup.string().required(textValidation("email", { required: true })),
         updateUsername: yup.string().required(textValidation("username", { required: true })),
+        updateAdmin: yup.string().required(textValidation("admin", { required: true })),
     });
     const resolverUpdate = useYupValidationResolver(validationSchemaUpdate);
     const { register: registerUpdate, handleSubmit: handleSubmitUpdate, formState: { errors: errorsUpdate }, reset } = useForm({ resolver: resolverUpdate });
@@ -21,7 +22,7 @@ export default function User() {
     const { isShowing: isShowingCreate, toggle: toggleCreate } = useModal();
     const { isShowing: isShowingUpdate, toggle: toggleUpdate } = useModal();
     const [data, setData] = useState({});
-    const [user, setUser] = useStorage("user");
+    const [user] = useStorage("user");
 
     useEffect(() => {
         listAll().then(res => setUsers(res));

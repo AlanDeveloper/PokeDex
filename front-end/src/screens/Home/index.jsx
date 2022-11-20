@@ -18,6 +18,7 @@ export default function Home() {
             <h1>Bem vindo!</h1>
             <Link to="/type_pokemon">Type</Link>
             <Link to="/pokemon">Pokemon</Link>
+            <Link to="/your_pokemons">Your pokemons</Link>
             <Link to="/user">User</Link>
             <Link to="#" onClick={logout}>Logout</Link>
         </div>

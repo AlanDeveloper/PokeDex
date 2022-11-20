@@ -14,11 +14,11 @@ export default function Type() {
 
     const validationSchemaCreate = yup.object({
         createName: yup.string().max(125, textValidation("name", { max: 125 })).required(textValidation("name", { required: true })),
-        createStatus: yup.boolean().required(textValidation("status", { required: true }))
+        createStatus: yup.string().required(textValidation("status", { required: true }))
     });
     const validationSchemaUpdate = yup.object({
         updateName: yup.string().max(125, textValidation("name", { max: 125 })).required(textValidation("name", { required: true })),
-        updateStatus: yup.boolean().required(textValidation("status", { required: true })),
+        updateStatus: yup.string().required(textValidation("status", { required: true })),
     });
     const resolverCreate = useYupValidationResolver(validationSchemaCreate);
     const resolverUpdate = useYupValidationResolver(validationSchemaUpdate);
@@ -28,13 +28,13 @@ export default function Type() {
     const { isShowing: isShowingCreate, toggle: toggleCreate } = useModal();
     const { isShowing: isShowingUpdate, toggle: toggleUpdate } = useModal();
     const [data, setData] = useState({});
-    const [user, setUser] = useStorage("user");
+    const [user] = useStorage("user");
 
     useEffect(() => {
         listAll().then(res => setTypes(res));
     }, []);
 
-    const onCreate = formData => {
+    const onCreate = (formData) => {
         addType({ name: formData.createName, status: formData.createStatus }).then(res => {
             listAll().then(res => setTypes(res));
         });

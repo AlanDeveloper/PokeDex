@@ -8,6 +8,7 @@ import Pokemon from "./screens/Pokemon";
 import SignUp from "./screens/SignUp";
 import Type from "./screens/Type";
 import User from "./screens/User";
+import YourPokemons from "./screens/YourPokemons";
 import getCookie from "./utils/getCookie";
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
                 <Route path="/signup" element={!auth ? <SignUp /> : <Navigate to="/" />} />
                 <Route path="/type_pokemon" element={auth ? <Type /> : <Navigate to="/" />} />
                 <Route path="/pokemon" element={auth ? <Pokemon /> : <Navigate to="/" />} />
+                <Route path="/your_pokemons" element={auth ? <YourPokemons /> : <Navigate to="/" />} />
                 <Route path="/user" element={auth ? <User /> : <Navigate to="/" />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
