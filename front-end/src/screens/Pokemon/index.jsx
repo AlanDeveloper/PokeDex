@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { addPokemon, deletePokemon, listAll, updatePokemon } from "../../providers/pokemonProvider";
 import { listAll as listAllTypes } from "../../providers/typeProvider";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import useModal from "../../utils/useModal";
 import useYupValidationResolver from "../../utils/useYupValidationResolver";
 import textValidation from "../../utils/textValidation";
 import ModalCreate from "./components/ModalCreate";
 import ModalUpdate from "./components/ModalUpdate";
 import * as yup from "yup";
+import useStorage from "../../contexts/useStorage";
 
 export default function Pokemon() {
 
@@ -24,33 +24,33 @@ export default function Pokemon() {
     const resolverUpdate = useYupValidationResolver(validationSchemaUpdate);
     const { register: registerCreate, handleSubmit: handleSubmitCreate, formState: { errors: errorsCreate } } = useForm({ resolver: resolverCreate });
     const { register: registerUpdate, handleSubmit: handleSubmitUpdate, formState: { errors: errorsUpdate }, reset } = useForm({ resolver: resolverUpdate });
-    const navigate = useNavigate();
     const [pokemons, setPokemons] = useState([]);
     const [types, setTypes] = useState([]);
     const { isShowing: isShowingCreate, toggle: toggleCreate } = useModal();
     const { isShowing: isShowingUpdate, toggle: toggleUpdate } = useModal();
     const [data, setData] = useState({});
+    const [user, setUser] = useStorage("user");
 
     useEffect(() => {
         listAll().then(res => setPokemons(res));
         listAllTypes().then(res => setTypes(res));
-    }, [pokemons]);
+    }, []);
 
     const onCreate = formData => {
         addPokemon({ name: formData.createName, typeId: formData.createTypeId }).then(res => {
-            navigate("/pokemon");
+            listAll().then(res => setPokemons(res));
         });
     }
 
     const onUpdate = (formData) => {
         updatePokemon({ name: formData.updateName, typeId: formData.updateTypeId }, data.id).then(res => {
-            navigate("/pokemon");
+            listAll().then(res => setPokemons(res));
         });
     }
 
     const onDelete = (id) => {
         deletePokemon(id).then(res => {
-            console.log(res);
+            listAll().then(res => setPokemons(res));
         });
     }
 
@@ -92,8 +92,12 @@ export default function Pokemon() {
                     <tr>
                         <td>Name</td>
                         <td>Type</td>
-                        <td>Action</td>
-                        <td>Action</td>
+                        {user.admin && (
+                            <>
+                                <td>Action</td>
+                                <td>Action</td>
+                            </>
+                        )}
                     </tr>
                 </thead>
                 <tbody>
@@ -102,16 +106,20 @@ export default function Pokemon() {
                             return (
                                 <tr key={index}>
                                     <td>{pokemon.name}</td>
-                                    <td>{pokemon.typeId}</td>
-                                    <td><button className="button-default" onClick={() => toggleCustomUpdate({ id: pokemon.id, name: pokemon.name, typeId: pokemon.typeId })}>Show ModalUpdate</button></td>
-                                    <td>
-                                        <form onSubmit={(e) => {
-                                            e.preventDefault();
-                                            onDelete(pokemon.id);
-                                        }}>
-                                            <input type="submit" value="Delete" />
-                                        </form>
-                                    </td>
+                                    <td>{pokemon.type_pokemon.name}</td>
+                                    {user.admin && (
+                                        <>
+                                            <td><button className="button-default" onClick={() => toggleCustomUpdate({ id: pokemon.id, name: pokemon.name, typeId: pokemon.typeId })}>Show ModalUpdate</button></td>
+                                            <td>
+                                                <form onSubmit={(e) => {
+                                                    e.preventDefault();
+                                                    onDelete(pokemon.id);
+                                                }}>
+                                                    <input type="submit" value="Delete" />
+                                                </form>
+                                            </td>
+                                        </>
+                                    )}
                                 </tr>
                             )
                         }))

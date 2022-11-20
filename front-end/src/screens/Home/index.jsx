@@ -4,7 +4,7 @@ import UserContext from "../../contexts/UserContext";
 
 export default function Home() {
     
-    const { user, setUser } = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const logout = () => {
         document.cookie = "_token=; Max-Age=0";
@@ -16,13 +16,9 @@ export default function Home() {
     return (
         <div>
             <h1>Bem vindo!</h1>
-            {user.admin && (
-                <>
-                    <Link to="/type_pokemon">Type</Link>
-                    <Link to="/pokemon">Pokemon</Link>
-                    <Link to="/user">User</Link>
-                </>
-            )}
+            <Link to="/type_pokemon">Type</Link>
+            <Link to="/pokemon">Pokemon</Link>
+            <Link to="/user">User</Link>
             <Link to="#" onClick={logout}>Logout</Link>
         </div>
     );

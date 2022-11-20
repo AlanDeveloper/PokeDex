@@ -17,6 +17,12 @@ const ModalCreate = ({ isShowing, hide, onSubmit, register, errors, data = {} })
                     <p>{errors.updateEmail?.message}</p>
                     <input type="text" {...register("updateUsername")} defaultValue={data.username} placeholder="Type the username" />
                     <p>{errors.updateUsername?.message}</p>
+                    <select {...register("updateAdmin")} defaultValue={data.admin ? "1" : "0"}>
+                        <option value="">Select one</option>
+                        <option value="0">User</option>
+                        <option value="1">Admin</option>
+                    </select>
+                    <p>{errors.updateAdmin?.message}</p>
                     <input type="submit" value="Send" />
                 </form>
             </div>

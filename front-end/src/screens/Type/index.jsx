@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { addType, deleteType, listAll, updateType } from "../../providers/typeProvider";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import useModal from "../../utils/useModal";
 import useYupValidationResolver from "../../utils/useYupValidationResolver";
 import textValidation from "../../utils/textValidation";
 import ModalCreate from "./components/ModalCreate";
 import ModalUpdate from "./components/ModalUpdate";
 import * as yup from "yup";
+import useStorage from "../../contexts/useStorage";
 
 export default function Type() {
 
@@ -24,31 +24,31 @@ export default function Type() {
     const resolverUpdate = useYupValidationResolver(validationSchemaUpdate);
     const { register: registerCreate, handleSubmit: handleSubmitCreate, formState: { errors: errorsCreate } } = useForm({ resolver: resolverCreate });
     const { register: registerUpdate, handleSubmit: handleSubmitUpdate, formState: { errors: errorsUpdate }, reset } = useForm({ resolver: resolverUpdate });
-    const navigate = useNavigate();
     const [types, setTypes] = useState([]);
     const { isShowing: isShowingCreate, toggle: toggleCreate } = useModal();
     const { isShowing: isShowingUpdate, toggle: toggleUpdate } = useModal();
     const [data, setData] = useState({});
+    const [user, setUser] = useStorage("user");
 
     useEffect(() => {
         listAll().then(res => setTypes(res));
-    }, [types]);
+    }, []);
 
     const onCreate = formData => {
         addType({ name: formData.createName, status: formData.createStatus }).then(res => {
-            navigate("/type_pokemon");
+            listAll().then(res => setTypes(res));
         });
     }
 
     const onUpdate = (formData) => {
         updateType({ name: formData.updateName, status: formData.updateStatus }, data.id).then(res => {
-            navigate("/type_pokemon");
+            listAll().then(res => setTypes(res));
         });
     }
 
     const onDelete = (id) => {
         deleteType(id).then(res => {
-            console.log(res);
+            listAll().then(res => setTypes(res));
         });
     }
 
@@ -88,8 +88,12 @@ export default function Type() {
                     <tr>
                         <td>Name</td>
                         <td>Status</td>
-                        <td>Action</td>
-                        <td>Action</td>
+                        {user.admin && (
+                            <>
+                                <td>Action</td>
+                                <td>Action</td>
+                            </>
+                        )}
                     </tr>
                 </thead>
                 <tbody>
@@ -99,15 +103,19 @@ export default function Type() {
                             <tr key={index}>
                                 <td>{type.name}</td>
                                 <td>{type.status ? "Active" : "Inactive"}</td>
-                                    <td><button className="button-default" onClick={() => toggleCustomUpdate({ id: type.id, name: type.name, status: type.status })}>Show ModalUpdate</button></td>
-                                    <td>
-                                        <form onSubmit={(e) => {
-                                            e.preventDefault();
-                                            onDelete(type.id);
-                                        }}>
-                                            <input type="submit" value="Delete" />
-                                        </form>
-                                    </td>
+                                {user.admin && (
+                                    <>
+                                        <td><button className="button-default" onClick={() => toggleCustomUpdate({ id: type.id, name: type.name, status: type.status })}>Show ModalUpdate</button></td>
+                                        <td>
+                                            <form onSubmit={(e) => {
+                                                e.preventDefault();
+                                                onDelete(type.id);
+                                            }}>
+                                                <input type="submit" value="Delete" />
+                                            </form>
+                                        </td>
+                                    </>
+                                )}
                             </tr>
                         )}))
                         : (
