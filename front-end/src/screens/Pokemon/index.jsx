@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { addType, deleteType, listAll, updateType } from "../../providers/pokemonProvider";
+import { addPokemon, deletePokemon, listAll, updatePokemon } from "../../providers/pokemonProvider";
 import { listAll as listAllTypes } from "../../providers/typeProvider";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -37,19 +37,19 @@ export default function Pokemon() {
     }, [pokemons]);
 
     const onCreate = formData => {
-        addType({ name: formData.createName, typeId: formData.createTypeId }).then(res => {
+        addPokemon({ name: formData.createName, typeId: formData.createTypeId }).then(res => {
             navigate("/pokemon");
         });
     }
 
     const onUpdate = (formData) => {
-        updateType({ name: formData.updateName, typeId: formData.updateTypeId }, data.id).then(res => {
+        updatePokemon({ name: formData.updateName, typeId: formData.updateTypeId }, data.id).then(res => {
             navigate("/pokemon");
         });
     }
 
     const onDelete = (id) => {
-        deleteType(id).then(res => {
+        deletePokemon(id).then(res => {
             console.log(res);
         });
     }
@@ -117,7 +117,7 @@ export default function Pokemon() {
                         }))
                         : (
                             <tr>
-                                <td colSpan={2}>Nenhum resultado encontrado</td>
+                                <td colSpan={4}>Nenhum resultado encontrado</td>
                             </tr>
                         )
                     }
