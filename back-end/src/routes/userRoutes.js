@@ -9,6 +9,6 @@ userRoutes.delete("/user/:id", UserController.destroy);
 
 userRoutes.get("/user/:userId/pokemon", UserController.pokemons);
 userRoutes.post("/user/:userId/pokemon", UserController.associatePokemon);
-userRoutes.delete("/user/:userId/pokemon/:pokemonId", UserController.disassociatePokemon);
+userRoutes.delete("/user/disassociatePokemon/:id", UserController.disassociatePokemon);
 
 module.exports = userRoutes;

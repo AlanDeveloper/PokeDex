@@ -24,6 +24,5 @@ module.exports = (sequelize, DataTypes) => {
         deletedAt: 'deletedAt',
         modelName: 'User_Pokemons',
     });
-    User_Pokemons.removeAttribute("id");
     return User_Pokemons;
 };

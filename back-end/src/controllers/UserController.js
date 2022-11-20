@@ -78,10 +78,9 @@ class UserController {
     }
 
     disassociatePokemon = async (req, res, next) => {
-        let { userId, pokemonId } = req.params;
+        let id = req.params.id;
         try {
-            if (!await UserModel.findByPk(userId)) throw "Not found";
-            await UserPokemonModel.destroy({ where: { userId: userId, pokemonId: pokemonId } });
+            await UserPokemonModel.destroy({ where: { id: id } });
 
             res.status(204).end();
         } catch (error) {

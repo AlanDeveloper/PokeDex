@@ -3,11 +3,15 @@
 module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.createTable('User_Pokemons', {
+            id: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                autoIncrement: true,
+                primaryKey: true
+            },
             userId: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
-                primaryKey: true,
-                unique: 'uniqueKeys',
                 references: { model: 'Users', key: 'id' },
                 onUpdate: 'CASCADE',
                 onDelete: 'CASCADE'
@@ -15,8 +19,6 @@ module.exports = {
             pokemonId: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
-                primaryKey: true,
-                unique: 'uniqueKeys',
                 references: { model: 'Pokemons', key: 'id' },
                 onUpdate: 'CASCADE',
                 onDelete: 'CASCADE'
@@ -32,13 +34,6 @@ module.exports = {
             deletedAt: {
                 type: Sequelize.DATE,
                 allowNull: true
-            }
-        },
-        {
-            uniqueKeys: {
-                actions_unique: {
-                    fields: ['userId', 'pokemonId']
-                }
             }
         });
     },
