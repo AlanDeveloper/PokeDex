@@ -49,7 +49,7 @@ class UserController {
         try {   
             if (!await UserModel.findByPk(userId)) throw "Not found";
 
-            const userPokemon = await UserModel.findOne({ where: { id: userId }, include: { model: db.User_Pokemons, as: 'pokemons', include: { model: db.Pokemon, as: 'pokemon' } } });
+            const userPokemon = await UserPokemonModel.findAll({ where: { userId: userId }, include: { model: db.Pokemon, as: "pokemon", include: { model: db.Type_Pokemon, as: "type_pokemon"} }});
 
             res.status(200);
             return res.json(userPokemon);
