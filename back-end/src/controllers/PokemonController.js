@@ -18,9 +18,11 @@ class PokemonController {
     }
 
     findOneOrListAll = async (req, res, next) => {
-        let id = req.params.id;
+        let { id } = req.params;
+        let { orderby = "name", offset = 0, limit = 25 } = req.query;
+        orderby = [[orderby, "asc"], ["id", "asc"]];
         try {
-            const pokemons = id ? await PokemonModel.findOne({ where: { id: id }, include: { model: db.Type_Pokemon, as: "type_pokemon", where: { status: true, deletedAt: null } } }) || {} : await PokemonModel.findAll({ include: { model: db.Type_Pokemon, as: "type_pokemon", where: { status: true, deletedAt: null }}});
+            const pokemons = id ? await PokemonModel.findOne({ where: { id: id }, include: { model: db.Type_Pokemon, as: "type_pokemon", where: { status: true, deletedAt: null } } }) || {} : await PokemonModel.findAll({ include: { model: db.Type_Pokemon, as: "type_pokemon", where: { status: true, deletedAt: null }}, order: orderby, limit, offset });
 
             res.status(200);
             return res.json(pokemons);

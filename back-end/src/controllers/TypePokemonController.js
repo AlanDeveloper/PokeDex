@@ -18,9 +18,11 @@ class TypePokemonController {
     }
 
     findOneOrListAll = async (req, res, next) => {
-        let id = req.params.id;
+        let { id } = req.params;
+        let { orderby = "name", offset = 0, limit = 25 } = req.query;
+        orderby = [[orderby, "asc"], ["id", "asc"]];
         try {
-            const types = id ? await TypePokemonModel.findOne({ where: { id: id } }) || {} : await TypePokemonModel.findAll();
+            const types = id ? await TypePokemonModel.findOne({ where: { id: id } }) || {} : await TypePokemonModel.findAll({ order: orderby, limit, offset });
 
             res.status(200);
             return res.json(types);

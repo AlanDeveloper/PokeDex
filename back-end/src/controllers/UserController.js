@@ -4,9 +4,11 @@ const UserPokemonModel = db.User_Pokemons;
 
 class UserController {
     findOneOrListAll = async (req, res, next) => {
-        let id = req.params.id;
+        let { id } = req.params;
+        let { orderby = "name", offset = 0, limit = 25 } = req.query;
+        orderby = [[orderby, "asc"], ["id", "asc"]];
         try {
-            const users = id ? await UserModel.findOne({ where: { id: id } }) || {} : await UserModel.findAll();
+            const users = id ? await UserModel.findOne({ where: { id: id } }) || {} : await UserModel.findAll({ order: orderby, limit, offset });
 
             res.status(200);
             return res.json(users);
@@ -45,11 +47,12 @@ class UserController {
     }
 
     pokemons = async (req, res, next) => {
-        let userId = req.params.userId;
+        let { userId } = req.params;
+        let { offset = 0, limit = 25 } = req.query;
         try {   
-            if (!await UserModel.findByPk(userId)) throw "Not found";
+            if (!await UserModel.findOne({ where: { id: userId }})) throw "Not found";
 
-            const userPokemon = await UserPokemonModel.findAll({ where: { userId: userId }, include: { model: db.Pokemon, as: "pokemon", include: { model: db.Type_Pokemon, as: "type_pokemon"} }});
+            const userPokemon = await UserPokemonModel.findAll({ where: { userId: userId }, offset, limit, include: { model: db.Pokemon, as: "pokemon", include: { model: db.Type_Pokemon, as: "type_pokemon" } } });
 
             res.status(200);
             return res.json(userPokemon);
