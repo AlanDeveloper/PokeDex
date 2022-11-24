@@ -39,7 +39,7 @@ export default function Type() {
             setTypes(res.types);
             setTotal(res.total);
         });
-    }, []);
+    }, [offset]);
 
     const onCreate = (formData) => {
         addType({ name: formData.createName, status: formData.createStatus }).then(res => {

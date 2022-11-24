@@ -33,31 +33,34 @@ export default function Pokemon() {
     const [user] = useStorage("user");
     const [total, setTotal] = useState(0);
     const [offset, setOffset] = useState(0);
+    // eslint-disable-next-line
+    const [offsetType, setOffsetType] = useState(0);
     const limit = 25;
+    const limitType = 2500;
 
     useEffect(() => {
         listAll(offset, limit).then(res => {
             setPokemons(res.pokemons);
             setTotal(res.total);
         });
-        listAllTypes().then(res => setTypes(res));
-    }, [offset]);
+        listAllTypes(offsetType, limitType).then(res => setTypes(res.types));
+    }, [offset, offsetType]);
 
     const onCreate = (formData) => {
         addPokemon({ name: formData.createName, typeId: formData.createTypeId }).then(res => {
-            listAll().then(res => setPokemons(res));
+            listAll(offset, limit).then(res => setPokemons(res.pokemons));
         });
     }
 
     const onUpdate = (formData) => {
         updatePokemon({ name: formData.updateName, typeId: formData.updateTypeId }, data.id).then(res => {
-            listAll().then(res => setPokemons(res));
+            listAll(offset, limit).then(res => setPokemons(res.pokemons));
         });
     }
 
     const onDelete = (id) => {
         deletePokemon(id).then(res => {
-            listAll().then(res => setPokemons(res));
+            listAll(offset, limit).then(res => setPokemons(res.pokemons));
         });
     }
 

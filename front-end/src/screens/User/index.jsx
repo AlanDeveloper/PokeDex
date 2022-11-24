@@ -33,7 +33,7 @@ export default function User() {
             setUsers(res.users);
             setTotal(res.total);
         });
-    }, []);
+    }, [offset]);
 
     const onUpdate = (formData) => {
         updateUser({ name: formData.updateName, email: formData.updateEmail, username: formData.updateUsername, admin: formData.updateAdmin }, data.id).then(res => {

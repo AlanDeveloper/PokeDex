@@ -32,7 +32,7 @@ export default function YourPokemons() {
             setTotal(res.total);
         });
         listPokemons(user.id).then(res => setYourPokemons(res));
-    }, [user.id]);
+    }, [user.id, offset]);
 
     const onCreate = (data) => {
         associatePokemon({ pokemonId: data.createPokemonId }, user.id).then(res => {
