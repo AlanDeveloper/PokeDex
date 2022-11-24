@@ -9,6 +9,7 @@ import ModalCreate from "./components/ModalCreate";
 import ModalUpdate from "./components/ModalUpdate";
 import * as yup from "yup";
 import useStorage from "../../contexts/useStorage";
+import Pagination from "../../components/Pagination";
 
 export default function Type() {
 
@@ -29,9 +30,15 @@ export default function Type() {
     const { isShowing: isShowingUpdate, toggle: toggleUpdate } = useModal();
     const [data, setData] = useState({});
     const [user] = useStorage("user");
+    const [total, setTotal] = useState(0);
+    const [offset, setOffset] = useState(0);
+    const limit = 25;
 
     useEffect(() => {
-        listAll().then(res => setTypes(res));
+        listAll(offset, limit).then(res => {
+            setTypes(res.types);
+            setTotal(res.total);
+        });
     }, []);
 
     const onCreate = (formData) => {
@@ -129,6 +136,7 @@ export default function Type() {
                     </tr>
                 </tbody>
             </table>
+            <Pagination total={total} offset={offset} setOffset={newOffset => setOffset(newOffset)} limit={limit} />
         </>
     );
 }

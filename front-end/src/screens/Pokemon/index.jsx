@@ -9,6 +9,7 @@ import ModalCreate from "./components/ModalCreate";
 import ModalUpdate from "./components/ModalUpdate";
 import * as yup from "yup";
 import useStorage from "../../contexts/useStorage";
+import Pagination from "../../components/Pagination";
 
 export default function Pokemon() {
 
@@ -30,11 +31,17 @@ export default function Pokemon() {
     const { isShowing: isShowingUpdate, toggle: toggleUpdate } = useModal();
     const [data, setData] = useState({});
     const [user] = useStorage("user");
+    const [total, setTotal] = useState(0);
+    const [offset, setOffset] = useState(0);
+    const limit = 25;
 
     useEffect(() => {
-        listAll().then(res => setPokemons(res));
+        listAll(offset, limit).then(res => {
+            setPokemons(res.pokemons);
+            setTotal(res.total);
+        });
         listAllTypes().then(res => setTypes(res));
-    }, []);
+    }, [offset]);
 
     const onCreate = (formData) => {
         addPokemon({ name: formData.createName, typeId: formData.createTypeId }).then(res => {
@@ -134,6 +141,7 @@ export default function Pokemon() {
                     </tr>
                 </tbody>
             </table>
+            <Pagination total={total} offset={offset} setOffset={newOffset => setOffset(newOffset)} limit={limit} />
         </>
     );
 }

@@ -7,6 +7,7 @@ import textValidation from "../../utils/textValidation";
 import ModalUpdate from "./components/ModalUpdate";
 import * as yup from "yup";
 import useStorage from "../../contexts/useStorage";
+import Pagination from "../../components/Pagination";
 
 export default function User() {
 
@@ -23,9 +24,15 @@ export default function User() {
     const { isShowing: isShowingUpdate, toggle: toggleUpdate } = useModal();
     const [data, setData] = useState({});
     const [user] = useStorage("user");
+    const [total, setTotal] = useState(0);
+    const [offset, setOffset] = useState(0);
+    const limit = 25;
 
     useEffect(() => {
-        listAll().then(res => setUsers(res));
+        listAll(offset, limit).then(res => {
+            setUsers(res.users);
+            setTotal(res.total);
+        });
     }, []);
 
     const onUpdate = (formData) => {
@@ -106,6 +113,7 @@ export default function User() {
                     </tr>
                 </tbody>
             </table>
+            <Pagination total={total} offset={offset} setOffset={newOffset => setOffset(newOffset)} limit={limit} />
         </>
     );
 }

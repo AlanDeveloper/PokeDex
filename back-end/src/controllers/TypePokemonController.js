@@ -23,9 +23,10 @@ class TypePokemonController {
         orderby = [[orderby, "asc"], ["id", "asc"]];
         try {
             const types = id ? await TypePokemonModel.findOne({ where: { id: id } }) || {} : await TypePokemonModel.findAll({ order: orderby, limit, offset });
+            const response = id ? types : { total: (await TypePokemonModel.findAll({ order: orderby })).length, offset, limit, types };
 
             res.status(200);
-            return res.json(types);
+            return res.json(response);
         } catch (error) {
             const err = new Error(error);
             return next(err);

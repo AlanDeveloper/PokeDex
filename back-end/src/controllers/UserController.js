@@ -9,9 +9,10 @@ class UserController {
         orderby = [[orderby, "asc"], ["id", "asc"]];
         try {
             const users = id ? await UserModel.findOne({ where: { id: id } }) || {} : await UserModel.findAll({ order: orderby, limit, offset });
+            const response = id ? users : { total: (await UserModel.findAll({ order: orderby })).length, offset, limit, users };
 
             res.status(200);
-            return res.json(users);
+            return res.json(response);
         } catch (error) {
             const err = new Error(error);
             return next(err);

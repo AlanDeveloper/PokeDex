@@ -9,6 +9,7 @@ import textValidation from "../../utils/textValidation";
 import { useForm } from "react-hook-form";
 import useYupValidationResolver from "../../utils/useYupValidationResolver";
 import * as yup from "yup";
+import Pagination from "../../components/Pagination";
 
 export default function YourPokemons() {
 
@@ -21,9 +22,15 @@ export default function YourPokemons() {
     const [user] = useStorage("user");
     const [pokemons, setPokemons] = useState([]);
     const [yourPokemons, setYourPokemons] = useState([]);
+    const [total, setTotal] = useState(0);
+    const [offset, setOffset] = useState(0);
+    const limit = 25;
 
     useEffect(() => {
-        listAll().then(res => setPokemons(res));
+        listAll(offset, limit).then(res => {
+            setPokemons(res);
+            setTotal(res.total);
+        });
         listPokemons(user.id).then(res => setYourPokemons(res));
     }, [user.id]);
 
@@ -91,6 +98,7 @@ export default function YourPokemons() {
                     </tr>
                 </tbody>
             </table>
+            <Pagination total={total} offset={offset} setOffset={newOffset => setOffset(newOffset)} limit={limit} />
         </>
     );
 }

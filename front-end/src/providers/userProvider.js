@@ -3,8 +3,8 @@ import getCookie from "../utils/getCookie";
 
 const token = getCookie("_token");
 
-const listAll = () => {
-    return api.get("/user", { headers: { 'x-access-token': token } }).then(res => res.data);
+const listAll = (offset, limit) => {
+    return api.get(`/user?offset=${offset}&limit=${limit}`, { headers: { 'x-access-token': token } }).then(res => res.data);
 }
 
 const updateUser = (formData, id) => {
@@ -15,7 +15,7 @@ const deleteUser = (id) => {
     return api.delete("/user/" + id, { headers: { 'x-access-token': token } }).then(res => res.data);
 }
 
-const listPokemons = (id) => {
+const listPokemons = (id, offset, limit) => {
     return api.get("/user/" + id + "/pokemon", { headers: { 'x-access-token': token } }).then(res => res.data);
 }
 

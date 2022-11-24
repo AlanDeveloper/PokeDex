@@ -23,9 +23,10 @@ class PokemonController {
         orderby = [[orderby, "asc"], ["id", "asc"]];
         try {
             const pokemons = id ? await PokemonModel.findOne({ where: { id: id }, include: { model: db.Type_Pokemon, as: "type_pokemon", where: { status: true, deletedAt: null } } }) || {} : await PokemonModel.findAll({ include: { model: db.Type_Pokemon, as: "type_pokemon", where: { status: true, deletedAt: null }}, order: orderby, limit, offset });
+            const response = id ? pokemons : { total: (await PokemonModel.findAll({ order: orderby })).length, offset, limit, pokemons };
 
             res.status(200);
-            return res.json(pokemons);
+            return res.json(response);
         } catch (error) {
             const err = new Error(error);
             return next(err);

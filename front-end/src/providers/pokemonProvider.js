@@ -3,8 +3,8 @@ import getCookie from "../utils/getCookie";
 
 const token = getCookie("_token");
 
-const listAll = () => {
-    return api.get("/pokemon", { headers: { 'x-access-token': token } }).then(res => res.data);
+const listAll = (offset, limit) => {
+    return api.get(`/pokemon?offset=${offset}&limit=${limit}`, { headers: { 'x-access-token': token } }).then(res => res.data);
 }
 
 const addPokemon = (formData) => {
