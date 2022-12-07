@@ -28,10 +28,12 @@ export default function YourPokemons() {
 
     useEffect(() => {
         listAll(offset, limit).then(res => {
-            setPokemons(res);
+            setPokemons(res.pokemons);
+        });
+        listPokemons(user.id).then(res => {
+            setYourPokemons(res);
             setTotal(res.total);
         });
-        listPokemons(user.id).then(res => setYourPokemons(res));
     }, [user.id, offset]);
 
     const onCreate = (data) => {

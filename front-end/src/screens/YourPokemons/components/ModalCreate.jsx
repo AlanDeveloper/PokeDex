@@ -13,7 +13,7 @@ const ModalCreate = ({ isShowing, hide, pokemons = [], onSubmit, register, error
                 <form onSubmit={onSubmit}>
                     <select {...register("createPokemonId")}>
                         <option value="">Select one</option>
-                        {pokemons.map((pokemon, index) => (
+                        {pokemons.length > 0  && pokemons.map((pokemon, index) => (
                             <option value={pokemon.id} key={index}>{pokemon.name}</option>
                         ))}
                     </select>
